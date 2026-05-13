@@ -1,12 +1,12 @@
 package com.bridgelabz.qunatitymeasurementapp;
 
+
 public class Length {
 
     private double value;
 
     private LengthUnit unit;
 
-    // Enum for units and conversion factors
     public enum LengthUnit {
 
         FEET(12.0),
@@ -28,22 +28,34 @@ public class Length {
         }
     }
 
-    // Constructor
     public Length(double value, LengthUnit unit) {
+
+        if (!Double.isFinite(value)) {
+            throw new IllegalArgumentException(
+                    "Value must be finite"
+            );
+        }
+
+        if (unit == null) {
+            throw new IllegalArgumentException(
+                    "Unit cannot be null"
+            );
+        }
 
         this.value = value;
 
         this.unit = unit;
     }
 
-    // Convert to base unit (inches)
     private double convertToBaseUnit() {
 
-        return value * unit.getConversionFactor();
+        double result =
+                value * unit.getConversionFactor();
+
+        return Math.round(result * 100.0) / 100.0;
     }
 
-    // Compare method
-    public boolean compare(Length thatLength) {
+    private boolean compare(Length thatLength) {
 
         return Double.compare(
                 this.convertToBaseUnit(),
@@ -51,46 +63,75 @@ public class Length {
         ) == 0;
     }
 
-    // equals method
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(Object o) {
 
-        if (this == obj)
+        if (this == o)
             return true;
 
-        if (obj == null || getClass() != obj.getClass())
+        if (o == null || getClass() != o.getClass())
             return false;
 
-        Length length = (Length) obj;
+        Length length = (Length) o;
 
         return compare(length);
     }
 
-    // Standalone testing
+    public Length convertTo(LengthUnit targetUnit) {
+
+        if (targetUnit == null) {
+            throw new IllegalArgumentException(
+                    "Target unit cannot be null"
+            );
+        }
+
+        double baseValue =
+                convertToBaseUnit();
+
+        double convertedValue =
+                baseValue /
+                        targetUnit.getConversionFactor();
+
+        convertedValue =
+                Math.round(convertedValue * 100.0)
+                        / 100.0;
+
+        return new Length(
+                convertedValue,
+                targetUnit
+        );
+    }
+
+    @Override
+    public String toString() {
+
+        return String.format(
+                "%.2f %s",
+                value,
+                unit
+        );
+    }
+
     public static void main(String[] args) {
 
-        Length length1 =
-                new Length(1.0, LengthUnit.FEET);
+        Length feet =
+                new Length(1.0,
+                        LengthUnit.FEET);
 
-        Length length2 =
-                new Length(12.0, LengthUnit.INCHES);
+        Length inches =
+                feet.convertTo(
+                        LengthUnit.INCHES);
 
-        System.out.println(length1.equals(length2));
+        System.out.println(inches);
 
-        Length length3 =
-                new Length(1.0, LengthUnit.YARDS);
+        Length yards =
+                new Length(2.0,
+                        LengthUnit.YARDS);
 
-        Length length4 =
-                new Length(36.0, LengthUnit.INCHES);
-
-        System.out.println(length3.equals(length4));
-
-        Length length5 =
-                new Length(100.0, LengthUnit.CENTIMETERS);
-
-        Length length6 =
-                new Length(39.3701, LengthUnit.INCHES);
-
-        System.out.println(length5.equals(length6));
+        System.out.println(
+                yards.convertTo(
+                        LengthUnit.INCHES
+                )
+        );
     }
 }
