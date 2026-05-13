@@ -25,11 +25,49 @@ public class QuantityMeasurementApp {
             return Double.compare(feet.value, value) == 0;
         }
     }
-    public static void main(String[] args) {
+
+    public static class Inches {
+
+        private final double value;
+
+        public Inches(double value) {
+            this.value = value;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+
+            if (this == obj)
+                return true;
+
+            if (obj == null || getClass() != obj.getClass())
+                return false;
+
+            Inches inches = (Inches) obj;
+
+            return Double.compare(inches.value, value) == 0;
+        }
+    }
+
+    public static void demonstrateFeetEquality() {
+
         Feet feet1 = new Feet(1.0);
         Feet feet2 = new Feet(1.0);
 
-        System.out.println(feet1.equals(feet2));
+        System.out.println("Feet Equality: " + feet1.equals(feet2));
+    }
+
+    public static void demonstrateInchesEquality() {
+
+        Inches inch1 = new Inches(1.0);
+        Inches inch2 = new Inches(1.0);
+
+        System.out.println("Inches Equality: " + inch1.equals(inch2));
+    }
+    public static void main(String[] args) {
+        demonstrateFeetEquality();
+
+        demonstrateInchesEquality();
 
     }
 }
