@@ -15,6 +15,11 @@ public enum WeightUnit implements IMeasurable {
     }
 
     @Override
+    public String getUnitName() {
+        return "";
+    }
+
+    @Override
     public double getConversionFactor() {
         return conversionFactor;
     }
@@ -27,6 +32,16 @@ public enum WeightUnit implements IMeasurable {
     @Override
     public double convertFromBaseUnit(double baseValue) {
         return round(baseValue / conversionFactor);
+    }
+
+    @Override
+    public boolean supportsArithmetic() {
+        return IMeasurable.super.supportsArithmetic();
+    }
+
+    @Override
+    public void validateOperationSupport(String operation) {
+        IMeasurable.super.validateOperationSupport(operation);
     }
 
     private double round(double value) {

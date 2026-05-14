@@ -176,6 +176,11 @@ public class Quantity<U extends IMeasurable> {
             ArithmeticOperation operation
     ) {
 
+        // UC14 Runtime Validation
+        unit.validateOperationSupport(operation.name());
+
+        other.unit.validateOperationSupport(operation.name());
+
         double thisBase =
                 unit.convertToBaseUnit(value);
 
