@@ -23,6 +23,8 @@ public class QuantityMeasurementApp {
                 targetUnit);
     }
 
+    // ================= ADDITION =================
+
     public static <U extends IMeasurable>
     Quantity<U> demonstrateAddition(
             Quantity<U> quantity1,
@@ -39,6 +41,8 @@ public class QuantityMeasurementApp {
 
         return quantity1.add(quantity2, targetUnit);
     }
+
+    // ================= SUBTRACTION =================
 
     public static
     <U extends IMeasurable>
@@ -62,6 +66,8 @@ public class QuantityMeasurementApp {
                 targetUnit);
     }
 
+    // ================= DIVISION =================
+
     public static
     <U extends IMeasurable>
     double demonstrateDivision(
@@ -72,15 +78,19 @@ public class QuantityMeasurementApp {
                 quantity2);
     }
 
-
+    // ================= MAIN METHOD =================
 
     public static void main(String[] args) {
 
+        System.out.println("===== WEIGHT TESTS =====");
+
         Quantity<WeightUnit> weightInGrams =
-                new Quantity<>(1000.0, WeightUnit.GRAM);
+                new Quantity<>(1000.0,
+                        WeightUnit.GRAM);
 
         Quantity<WeightUnit> weightInKilograms =
-                new Quantity<>(1.0, WeightUnit.KILOGRAM);
+                new Quantity<>(1.0,
+                        WeightUnit.KILOGRAM);
 
         boolean areEqual =
                 demonstrateEquality(
@@ -88,9 +98,8 @@ public class QuantityMeasurementApp {
                         weightInKilograms);
 
         System.out.println(
-                "Are weights equal? " + areEqual);
-
-
+                "Are weights equal? "
+                        + areEqual);
 
         Quantity<WeightUnit> convertedWeight =
                 demonstrateConversion(
@@ -102,8 +111,6 @@ public class QuantityMeasurementApp {
                         + convertedWeight.getValue()
                         + " "
                         + convertedWeight.getUnit());
-
-
 
         Quantity<WeightUnit> weightInPounds =
                 new Quantity<>(2.20462,
@@ -120,8 +127,6 @@ public class QuantityMeasurementApp {
                         + " "
                         + sumWeight.getUnit());
 
-
-
         Quantity<WeightUnit> sumWeightInGrams =
                 demonstrateAddition(
                         weightInKilograms,
@@ -134,16 +139,23 @@ public class QuantityMeasurementApp {
                         + " "
                         + sumWeightInGrams.getUnit());
 
-        System.out.println("===== VOLUME TESTS =====");
+
+
+        // ================= VOLUME =================
+
+        System.out.println("\n===== VOLUME TESTS =====");
 
         Quantity<VolumeUnit> litre =
-                new Quantity<>(1.0, VolumeUnit.LITRE);
+                new Quantity<>(1.0,
+                        VolumeUnit.LITRE);
 
         Quantity<VolumeUnit> millilitre =
-                new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
+                new Quantity<>(1000.0,
+                        VolumeUnit.MILLILITRE);
 
         Quantity<VolumeUnit> gallon =
-                new Quantity<>(1.0, VolumeUnit.GALLON);
+                new Quantity<>(1.0,
+                        VolumeUnit.GALLON);
 
         System.out.println(
                 "1 L == 1000 mL : "
@@ -151,7 +163,8 @@ public class QuantityMeasurementApp {
 
         System.out.println(
                 "1 Gallon in Litres : "
-                        + gallon.convertTo(VolumeUnit.LITRE));
+                        + gallon.convertTo(
+                        VolumeUnit.LITRE));
 
         System.out.println(
                 "1 L + 1000 mL : "
@@ -159,9 +172,16 @@ public class QuantityMeasurementApp {
 
         System.out.println(
                 "1 Gallon + 1 L in Gallons : "
-                        + gallon.add(litre, VolumeUnit.GALLON));
+                        + gallon.add(
+                        litre,
+                        VolumeUnit.GALLON));
 
-        System.out.println("===== SUBTRACT and DIVISION =====");
+
+
+        // ================= LENGTH =================
+
+        System.out.println(
+                "\n===== SUBTRACT and DIVISION =====");
 
         Quantity<LengthUnit> feet =
                 new Quantity<>(10.0,
@@ -186,8 +206,112 @@ public class QuantityMeasurementApp {
                 demonstrateDivision(
                         feet,
                         inches));
+
+
+
+        // ================= UC14 TEMPERATURE =================
+
+        System.out.println(
+                "\n===== TEMPERATURE TESTS =====");
+
+        Quantity<TemperatureUnit> celsius =
+                new Quantity<>(0.0,
+                        TemperatureUnit.CELSIUS);
+
+        Quantity<TemperatureUnit> fahrenheit =
+                new Quantity<>(32.0,
+                        TemperatureUnit.FAHRENHEIT);
+
+        Quantity<TemperatureUnit> kelvin =
+                new Quantity<>(273.15,
+                        TemperatureUnit.KELVIN);
+
+        // Equality
+        System.out.println(
+                "0°C == 32°F : "
+                        + celsius.equals(fahrenheit));
+
+        System.out.println(
+                "0°C == 273.15K : "
+                        + celsius.equals(kelvin));
+
+
+
+        // Conversion
+        Quantity<TemperatureUnit> boilingPoint =
+                new Quantity<>(100.0,
+                        TemperatureUnit.CELSIUS);
+
+        Quantity<TemperatureUnit> convertedFahrenheit =
+                demonstrateConversion(
+                        boilingPoint,
+                        TemperatureUnit.FAHRENHEIT);
+
+        System.out.println(
+                "100°C in Fahrenheit : "
+                        + convertedFahrenheit.getValue()
+                        + " "
+                        + convertedFahrenheit.getUnit());
+
+
+
+        // Unsupported Arithmetic
+        try {
+
+            Quantity<TemperatureUnit> result =
+                    demonstrateAddition(
+                            celsius,
+                            new Quantity<>(
+                                    50.0,
+                                    TemperatureUnit.CELSIUS));
+
+            System.out.println(result);
+
+        } catch (UnsupportedOperationException e) {
+
+            System.out.println(
+                    "Temperature Addition Unsupported : "
+                            + e.getMessage());
+        }
+
+
+
+        try {
+
+            Quantity<TemperatureUnit> result =
+                    demonstrateSubtraction(
+                            celsius,
+                            new Quantity<>(
+                                    10.0,
+                                    TemperatureUnit.CELSIUS));
+
+            System.out.println(result);
+
+        } catch (UnsupportedOperationException e) {
+
+            System.out.println(
+                    "Temperature Subtraction Unsupported : "
+                            + e.getMessage());
+        }
+
+
+
+        try {
+
+            double result =
+                    demonstrateDivision(
+                            celsius,
+                            new Quantity<>(
+                                    2.0,
+                                    TemperatureUnit.CELSIUS));
+
+            System.out.println(result);
+
+        } catch (UnsupportedOperationException e) {
+
+            System.out.println(
+                    "Temperature Division Unsupported : "
+                            + e.getMessage());
+        }
     }
-
-
-
 }
