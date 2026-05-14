@@ -300,4 +300,247 @@ public class QuantityMeasurementAppTest {
 
         assertTrue(result.equals(expected));
     }
+
+    @Test
+    public void addFeetAndInchesWithTargetUnitFeet() {
+
+        Length length1 =
+                new Length(1.0, Length.LengthUnit.FEET);
+
+        Length length2 =
+                new Length(12.0, Length.LengthUnit.INCHES);
+
+        Length result =
+                QuantityMeasurementApp.demonstrateLengthAddition(
+                        length1,
+                        length2,
+                        Length.LengthUnit.FEET
+                );
+
+        Length expected =
+                new Length(2.0, Length.LengthUnit.FEET);
+
+        assertTrue(result.equals(expected));
+    }
+
+    @Test
+    public void addFeetAndInchesWithTargetUnitYards() {
+
+        Length length1 =
+                new Length(1.0, Length.LengthUnit.FEET);
+
+        Length length2 =
+                new Length(12.0, Length.LengthUnit.INCHES);
+
+        Length result =
+                QuantityMeasurementApp.demonstrateLengthAddition(
+                        length1,
+                        length2,
+                        Length.LengthUnit.YARDS
+                );
+
+        Length expected =
+                new Length(0.67, Length.LengthUnit.YARDS);
+
+        assertTrue(result.equals(expected));
+    }
+
+    @Test
+    public void addInchesWithTargetUnitCentimeters() {
+
+        Length length1 =
+                new Length(1.0, Length.LengthUnit.INCHES);
+
+        Length length2 =
+                new Length(1.0, Length.LengthUnit.INCHES);
+
+        Length result =
+                QuantityMeasurementApp.demonstrateLengthAddition(
+                        length1,
+                        length2,
+                        Length.LengthUnit.CENTIMETERS
+                );
+
+        Length expected =
+                new Length(5.08, Length.LengthUnit.CENTIMETERS);
+
+        assertTrue(result.equals(expected));
+    }
+
+    @Test
+    public void addYardsAndFeetWithTargetUnitYards() {
+
+        Length length1 =
+                new Length(2.0, Length.LengthUnit.YARDS);
+
+        Length length2 =
+                new Length(3.0, Length.LengthUnit.FEET);
+
+        Length result =
+                QuantityMeasurementApp.demonstrateLengthAddition(
+                        length1,
+                        length2,
+                        Length.LengthUnit.YARDS
+                );
+
+        Length expected =
+                new Length(3.0, Length.LengthUnit.YARDS);
+
+        assertTrue(result.equals(expected));
+    }
+
+    @Test
+    public void addYardsAndFeetWithTargetUnitFeet() {
+
+        Length length1 =
+                new Length(2.0, Length.LengthUnit.YARDS);
+
+        Length length2 =
+                new Length(3.0, Length.LengthUnit.FEET);
+
+        Length result =
+                QuantityMeasurementApp.demonstrateLengthAddition(
+                        length1,
+                        length2,
+                        Length.LengthUnit.FEET
+                );
+
+        Length expected =
+                new Length(9.0, Length.LengthUnit.FEET);
+
+        assertTrue(result.equals(expected));
+    }
+
+    @Test
+    public void additionCommutativityWithTargetUnit() {
+
+        Length length1 =
+                new Length(1.0, Length.LengthUnit.FEET);
+
+        Length length2 =
+                new Length(12.0, Length.LengthUnit.INCHES);
+
+        Length result1 =
+                QuantityMeasurementApp.demonstrateLengthAddition(
+                        length1,
+                        length2,
+                        Length.LengthUnit.YARDS
+                );
+
+        Length result2 =
+                QuantityMeasurementApp.demonstrateLengthAddition(
+                        length2,
+                        length1,
+                        Length.LengthUnit.YARDS
+                );
+
+        assertTrue(result1.equals(result2));
+    }
+
+    @Test
+    public void additionWithZeroAndTargetUnit() {
+
+        Length length1 =
+                new Length(5.0, Length.LengthUnit.FEET);
+
+        Length length2 =
+                new Length(0.0, Length.LengthUnit.INCHES);
+
+        Length result =
+                QuantityMeasurementApp.demonstrateLengthAddition(
+                        length1,
+                        length2,
+                        Length.LengthUnit.YARDS
+                );
+
+        Length expected =
+                new Length(1.67, Length.LengthUnit.YARDS);
+
+        assertTrue(result.equals(expected));
+    }
+
+    @Test
+    public void additionWithNegativeValuesAndTargetUnit() {
+
+        Length length1 =
+                new Length(5.0, Length.LengthUnit.FEET);
+
+        Length length2 =
+                new Length(-2.0, Length.LengthUnit.FEET);
+
+        Length result =
+                QuantityMeasurementApp.demonstrateLengthAddition(
+                        length1,
+                        length2,
+                        Length.LengthUnit.INCHES
+                );
+
+        Length expected =
+                new Length(36.0, Length.LengthUnit.INCHES);
+
+        assertTrue(result.equals(expected));
+    }
+
+    @Test
+    public void additionWithNullTargetUnit() {
+
+        Length length1 =
+                new Length(1.0, Length.LengthUnit.FEET);
+
+        Length length2 =
+                new Length(12.0, Length.LengthUnit.INCHES);
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> QuantityMeasurementApp.demonstrateLengthAddition(
+                        length1,
+                        length2,
+                        null
+                )
+        );
+    }
+
+    @Test
+    public void additionLargeToSmallScale() {
+
+        Length length1 =
+                new Length(1000.0, Length.LengthUnit.FEET);
+
+        Length length2 =
+                new Length(500.0, Length.LengthUnit.FEET);
+
+        Length result =
+                QuantityMeasurementApp.demonstrateLengthAddition(
+                        length1,
+                        length2,
+                        Length.LengthUnit.INCHES
+                );
+
+        Length expected =
+                new Length(18000.0, Length.LengthUnit.INCHES);
+
+        assertTrue(result.equals(expected));
+    }
+
+    @Test
+    public void additionSmallToLargeScale() {
+
+        Length length1 =
+                new Length(12.0, Length.LengthUnit.INCHES);
+
+        Length length2 =
+                new Length(12.0, Length.LengthUnit.INCHES);
+
+        Length result =
+                QuantityMeasurementApp.demonstrateLengthAddition(
+                        length1,
+                        length2,
+                        Length.LengthUnit.YARDS
+                );
+
+        Length expected =
+                new Length(0.67, Length.LengthUnit.YARDS);
+
+        assertTrue(result.equals(expected));
+    }
 }
