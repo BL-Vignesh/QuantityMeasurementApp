@@ -15,7 +15,12 @@ public class QuantityMeasurementApp {
             Quantity<U> quantity,
             U targetUnit) {
 
-        return quantity.convertTo(targetUnit);
+        double convertedValue =
+                quantity.convertTo(targetUnit);
+
+        return new Quantity<>(
+                convertedValue,
+                targetUnit);
     }
 
     public static <U extends IMeasurable>
