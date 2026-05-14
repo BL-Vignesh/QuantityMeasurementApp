@@ -100,4 +100,12 @@ public class QuantityMeasurementApp {
 
         System.out.println(sum);
     }
+
+    public static Length demonstrateLengthAddition(
+            Length length1,
+            Length length2,
+            Length.LengthUnit targetUnit) {
+
+        return length1.add(length2, targetUnit);
+    }
 }

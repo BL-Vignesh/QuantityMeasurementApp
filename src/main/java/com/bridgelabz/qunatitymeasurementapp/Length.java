@@ -97,6 +97,40 @@ public class Length {
         return new Length(convertedResult, this.unit);
     }
 
+    private Length addAndConvert(
+            Length length,
+            LengthUnit targetUnit) {
+
+        double thisLengthInInches =
+                this.convertToBaseUnit();
+
+        double thatLengthInInches =
+                length.convertToBaseUnit();
+
+        double totalInInches =
+                thisLengthInInches + thatLengthInInches;
+
+        double convertedValue =
+                convertFromBaseToTargetUnit(
+                        totalInInches,
+                        targetUnit
+                );
+
+        return new Length(convertedValue, targetUnit);
+    }
+
+    public Length add(
+            Length length,
+            LengthUnit targetUnit) {
+
+        if (length == null || targetUnit == null) {
+            throw new IllegalArgumentException(
+                    "Length and target unit cannot be null"
+            );
+        }
+
+        return addAndConvert(length, targetUnit);
+    }
 
     private double convertFromBaseToTargetUnit(
             double lengthInInches,
