@@ -2,99 +2,114 @@ package com.bridgelabz.qunatitymeasurementapp;
 
 public class Length {
 
-
     private double value;
     private LengthUnit unit;
 
-
-    public enum LengthUnit {
-        FEET(12.0),
-        INCHES(1.0),
-        YARDS(36.0),
-        CENTIMETERS(0.393701);
-
-        private final double conversionFactor;
-
-        LengthUnit(double conversionFactor) {
-            this.conversionFactor = conversionFactor;
-        }
-
-        public double getConversionFactor() {
-            return conversionFactor;
-        }
-    }
-
-
     public Length(double value, LengthUnit unit) {
+
+        if (unit == null) {
+            throw new IllegalArgumentException(
+                    "Unit cannot be null"
+            );
+        }
+
+        if (Double.isNaN(value) ||
+                Double.isInfinite(value)) {
+
+            throw new IllegalArgumentException(
+                    "Invalid length value"
+            );
+        }
+
         this.value = value;
         this.unit = unit;
     }
 
-
-    private double convertToBaseUnit() {
-        double result = value * unit.getConversionFactor();
-        return Math.round(result * 100.0) / 100.0;
+    public double getValue() {
+        return value;
     }
 
-
-    private boolean compare(Length thatLength) {
-        return this.convertToBaseUnit() ==
-                thatLength.convertToBaseUnit();
+    public LengthUnit getUnit() {
+        return unit;
     }
-
 
     @Override
     public boolean equals(Object o) {
 
-        if (this == o)
+        if (this == o) {
             return true;
+        }
 
-        if (o == null || getClass() != o.getClass())
+        if (!(o instanceof Length)) {
             return false;
+        }
 
         Length thatLength = (Length) o;
 
         return compare(thatLength);
     }
 
-
     public Length convertTo(LengthUnit targetUnit) {
 
         if (targetUnit == null) {
-            throw new IllegalArgumentException("Target unit cannot be null");
+            throw new IllegalArgumentException(
+                    "Target unit cannot be null"
+            );
         }
 
-        double baseValue = convertToBaseUnit();
+        double baseValue =
+                convertToBaseUnit();
 
         double convertedValue =
-                baseValue / targetUnit.getConversionFactor();
+                convertFromBaseToTargetUnit(
+                        baseValue,
+                        targetUnit
+                );
 
-        convertedValue =
-                Math.round(convertedValue * 100.0) / 100.0;
-
-        return new Length(convertedValue, targetUnit);
+        return new Length(
+                convertedValue,
+                targetUnit
+        );
     }
-
 
     public Length add(Length thatLength) {
 
         if (thatLength == null) {
-            throw new IllegalArgumentException("Length cannot be null");
+            throw new IllegalArgumentException(
+                    "Length cannot be null"
+            );
         }
 
-        double thisLengthInInches =
+        return addAndConvert(
+                thatLength,
+                this.unit
+        );
+    }
+
+    public Length add(
+            Length length,
+            LengthUnit targetUnit) {
+
+        if (length == null || targetUnit == null) {
+
+            throw new IllegalArgumentException(
+                    "Length and target unit cannot be null"
+            );
+        }
+
+        return addAndConvert(length, targetUnit);
+    }
+
+    private boolean compare(Length thatLength) {
+
+        double thisValue =
                 this.convertToBaseUnit();
 
-        double thatLengthInInches =
+        double thatValue =
                 thatLength.convertToBaseUnit();
 
-        double totalInInches =
-                thisLengthInInches + thatLengthInInches;
-
-        double convertedResult =
-                convertFromBaseToTargetUnit(totalInInches, this.unit);
-
-        return new Length(convertedResult, this.unit);
+        return Math.abs(thisValue - thatValue)
+                < 0.01;
     }
 
     private Length addAndConvert(
@@ -108,7 +123,8 @@ public class Length {
                 length.convertToBaseUnit();
 
         double totalInInches =
-                thisLengthInInches + thatLengthInInches;
+                thisLengthInInches
+                        + thatLengthInInches;
 
         double convertedValue =
                 convertFromBaseToTargetUnit(
@@ -116,74 +132,67 @@ public class Length {
                         targetUnit
                 );
 
-        return new Length(convertedValue, targetUnit);
+        return new Length(
+                convertedValue,
+                targetUnit
+        );
     }
 
-    public Length add(
-            Length length,
-            LengthUnit targetUnit) {
+    private double convertToBaseUnit() {
 
-        if (length == null || targetUnit == null) {
-            throw new IllegalArgumentException(
-                    "Length and target unit cannot be null"
-            );
-        }
-
-        return addAndConvert(length, targetUnit);
+        return unit.convertToBaseUnit(value);
     }
 
     private double convertFromBaseToTargetUnit(
             double lengthInInches,
             LengthUnit targetUnit) {
 
-        double convertedValue =
-                lengthInInches / targetUnit.getConversionFactor();
-
-        return Math.round(convertedValue * 100.0) / 100.0;
+        return targetUnit.convertFromBaseUnit(
+                lengthInInches
+        );
     }
 
     @Override
     public String toString() {
-        return String.format("%.2f %s", value, unit);
-    }
 
+        return String.format(
+                "%.2f %s",
+                value,
+                unit
+        );
+    }
 
     public static void main(String[] args) {
 
-        Length length1 =
-                new Length(1.0, LengthUnit.FEET);
+        Length feet =
+                new Length(
+                        1.0,
+                        LengthUnit.FEET
+                );
 
-        Length length2 =
-                new Length(12.0, LengthUnit.INCHES);
+        Length inches =
+                new Length(
+                        12.0,
+                        LengthUnit.INCHES
+                );
 
-        System.out.println(length1.equals(length2));
+        System.out.println(
+                feet.equals(inches)
+        );
 
-        Length length3 =
-                new Length(1.0, LengthUnit.YARDS);
+        Length converted =
+                feet.convertTo(
+                        LengthUnit.INCHES
+                );
 
-        Length length4 =
-                new Length(36.0, LengthUnit.INCHES);
+        System.out.println(converted);
 
-        System.out.println(length3.equals(length4));
+        Length added =
+                feet.add(
+                        inches,
+                        LengthUnit.FEET
+                );
 
-        Length length5 =
-                new Length(100.0, LengthUnit.CENTIMETERS);
-
-        Length length6 =
-                new Length(39.37, LengthUnit.INCHES);
-
-        System.out.println(length5.equals(length6));
-
-
-        Length convertedFeet =
-                length1.convertTo(LengthUnit.INCHES);
-
-        System.out.println(convertedFeet);
-
-
-        Length sum =
-                length1.add(length2);
-
-        System.out.println(sum);
+        System.out.println(added);
     }
 }
