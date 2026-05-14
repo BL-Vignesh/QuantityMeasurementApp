@@ -35,6 +35,40 @@ public class QuantityMeasurementApp {
         return quantity1.add(quantity2, targetUnit);
     }
 
+    public static
+    <U extends IMeasurable>
+    Quantity<U> demonstrateSubtraction(
+            Quantity<U> quantity1,
+            Quantity<U> quantity2) {
+
+        return quantity1.subtract(
+                quantity2);
+    }
+
+    public static
+    <U extends IMeasurable>
+    Quantity<U> demonstrateSubtraction(
+            Quantity<U> quantity1,
+            Quantity<U> quantity2,
+            U targetUnit) {
+
+        return quantity1.subtract(
+                quantity2,
+                targetUnit);
+    }
+
+    public static
+    <U extends IMeasurable>
+    double demonstrateDivision(
+            Quantity<U> quantity1,
+            Quantity<U> quantity2) {
+
+        return quantity1.divide(
+                quantity2);
+    }
+
+
+
     public static void main(String[] args) {
 
         Quantity<WeightUnit> weightInGrams =
@@ -121,7 +155,34 @@ public class QuantityMeasurementApp {
         System.out.println(
                 "1 Gallon + 1 L in Gallons : "
                         + gallon.add(litre, VolumeUnit.GALLON));
+
+        System.out.println("===== SUBTRACT and DIVISION =====");
+
+        Quantity<LengthUnit> feet =
+                new Quantity<>(10.0,
+                        LengthUnit.FEET);
+
+        Quantity<LengthUnit> inches =
+                new Quantity<>(6.0,
+                        LengthUnit.INCHES);
+
+        System.out.println(
+                demonstrateSubtraction(
+                        feet,
+                        inches));
+
+        System.out.println(
+                demonstrateSubtraction(
+                        feet,
+                        inches,
+                        LengthUnit.INCHES));
+
+        System.out.println(
+                demonstrateDivision(
+                        feet,
+                        inches));
     }
+
 
 
 }
