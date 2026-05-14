@@ -1,5 +1,6 @@
 package com.bridgelabz.qunatitymeasurementapp;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -496,5 +497,70 @@ public class QuantityMeasurementAppTest {
                                 expected
                         )
         );
+    }
+
+    @Test
+    public void kilogramEquals1000Grams() {
+
+        Weight kilogram =
+                new Weight(1, WeightUnit.KILOGRAM);
+
+        Weight gram =
+                new Weight(1000, WeightUnit.GRAM);
+
+        Assertions.assertEquals(kilogram, gram);
+    }
+
+    @Test
+    public void poundEquals453Point592Grams() {
+
+        Weight pound =
+                new Weight(1, WeightUnit.POUND);
+
+        Weight grams =
+                new Weight(453.592, WeightUnit.GRAM);
+
+        Assertions.assertEquals(pound, grams);
+    }
+
+    @Test
+    public void tonneEquals1000000Grams() {
+
+        Weight tonne =
+                new Weight(1, WeightUnit.TONNE);
+
+        Weight grams =
+                new Weight(1000000, WeightUnit.GRAM);
+
+        Assertions.assertEquals(tonne, grams);
+    }
+
+    @Test
+    public void kilogramNotEqualToPound() {
+
+        Weight kilogram =
+                new Weight(1, WeightUnit.KILOGRAM);
+
+        Weight pound =
+                new Weight(1, WeightUnit.POUND);
+
+        Assertions.assertNotEquals(kilogram, pound);
+    }
+
+    @Test
+    public void additionOfWeightsEqualsExpected() {
+
+        Weight kilogram =
+                new Weight(1, WeightUnit.KILOGRAM);
+
+        Weight gram =
+                new Weight(1000, WeightUnit.GRAM);
+
+        Weight expected =
+                new Weight(2, WeightUnit.KILOGRAM);
+
+        Assertions.assertEquals(
+                expected,
+                kilogram.add(gram));
     }
 }
