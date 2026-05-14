@@ -131,4 +131,113 @@ public class Quantity<U extends IMeasurable> {
                 unit +
                 ")";
     }
+
+    public Quantity<U> subtract(Quantity<U> other) {
+
+        if (other == null) {
+            throw new IllegalArgumentException(
+                    "Quantity cannot be null");
+        }
+
+        if (!unit.getClass().equals(
+                other.unit.getClass())) {
+
+            throw new IllegalArgumentException(
+                    "Incompatible unit types");
+        }
+
+        double thisBase =
+                unit.convertToBaseUnit(value);
+
+        double otherBase =
+                other.unit.convertToBaseUnit(
+                        other.value);
+
+        double resultBase =
+                thisBase - otherBase;
+
+        double result =
+                unit.convertFromBaseUnit(
+                        resultBase);
+
+        result =
+                Math.round(result * 100.0) / 100.0;
+
+        return new Quantity<>(
+                result,
+                unit);
+    }
+
+    public Quantity<U> subtract(
+            Quantity<U> other,
+            U targetUnit) {
+
+        if (other == null) {
+            throw new IllegalArgumentException(
+                    "Quantity cannot be null");
+        }
+
+        if (targetUnit == null) {
+            throw new IllegalArgumentException(
+                    "Target unit cannot be null");
+        }
+
+        if (!unit.getClass().equals(
+                other.unit.getClass())) {
+
+            throw new IllegalArgumentException(
+                    "Incompatible unit types");
+        }
+
+        double thisBase =
+                unit.convertToBaseUnit(value);
+
+        double otherBase =
+                other.unit.convertToBaseUnit(
+                        other.value);
+
+        double resultBase =
+                thisBase - otherBase;
+
+        double result =
+                targetUnit.convertFromBaseUnit(
+                        resultBase);
+
+        result =
+                Math.round(result * 100.0) / 100.0;
+
+        return new Quantity<>(
+                result,
+                targetUnit);
+    }
+
+    public double divide(
+            Quantity<U> other) {
+
+        if (other == null) {
+            throw new IllegalArgumentException(
+                    "Quantity cannot be null");
+        }
+
+        if (!unit.getClass().equals(
+                other.unit.getClass())) {
+
+            throw new IllegalArgumentException(
+                    "Incompatible unit types");
+        }
+
+        double thisBase =
+                unit.convertToBaseUnit(value);
+
+        double otherBase =
+                other.unit.convertToBaseUnit(
+                        other.value);
+
+        if (otherBase == 0) {
+            throw new ArithmeticException(
+                    "Cannot divide by zero");
+        }
+
+        return thisBase / otherBase;
+    }
 }
