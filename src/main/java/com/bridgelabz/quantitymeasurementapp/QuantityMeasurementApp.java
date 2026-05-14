@@ -94,5 +94,34 @@ public class QuantityMeasurementApp {
                         + sumWeightInGrams.getValue()
                         + " "
                         + sumWeightInGrams.getUnit());
+
+        System.out.println("===== VOLUME TESTS =====");
+
+        Quantity<VolumeUnit> litre =
+                new Quantity<>(1.0, VolumeUnit.LITRE);
+
+        Quantity<VolumeUnit> millilitre =
+                new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
+
+        Quantity<VolumeUnit> gallon =
+                new Quantity<>(1.0, VolumeUnit.GALLON);
+
+        System.out.println(
+                "1 L == 1000 mL : "
+                        + litre.equals(millilitre));
+
+        System.out.println(
+                "1 Gallon in Litres : "
+                        + gallon.convertTo(VolumeUnit.LITRE));
+
+        System.out.println(
+                "1 L + 1000 mL : "
+                        + litre.add(millilitre));
+
+        System.out.println(
+                "1 Gallon + 1 L in Gallons : "
+                        + gallon.add(litre, VolumeUnit.GALLON));
     }
+
+
 }
